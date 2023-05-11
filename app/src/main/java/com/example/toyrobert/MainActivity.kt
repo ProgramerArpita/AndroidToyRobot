@@ -1,6 +1,5 @@
 package com.example.toyrobert
 
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -23,6 +22,9 @@ class MainActivity : AppCompatActivity(),View.OnClickListener {
     lateinit var inputXPosition:String
     lateinit var inputYposition:String
     lateinit var inputDirection:String
+    lateinit var spX: Spinner
+    lateinit var spY: Spinner
+    lateinit var spFace: Spinner
     lateinit var report: Report
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,9 +32,9 @@ class MainActivity : AppCompatActivity(),View.OnClickListener {
         setContentView(R.layout.activity_main)
         val positionList = resources.getStringArray(R.array.position)
         val faceList = resources.getStringArray(R.array.face)
-        val spX = findViewById<Spinner>(R.id.spinner_x)
-        val spY= findViewById<Spinner>(R.id.spinner_y)
-        val spFace = findViewById<Spinner>(R.id.spinner_face)
+        spX = findViewById<Spinner>(R.id.spinner_x)
+        spY= findViewById<Spinner>(R.id.spinner_y)
+         spFace = findViewById<Spinner>(R.id.spinner_face)
          btPlace = findViewById<Button>(R.id.bt_Place)
          btReport = findViewById<Button>(R.id.bt_report)
          btLeft = findViewById<Button>(R.id.bt_Left)
@@ -123,9 +125,19 @@ class MainActivity : AppCompatActivity(),View.OnClickListener {
         etOutput.setText(getString(R.string.Initial_Msg))
     }
 
-    private fun outPutofRobert(tvMsg: String, etMsg: String) {
-        tvoutPut.text = tvMsg
-        etOutput.setText(etMsg)
+    private fun outPutofRobert(tvMsg: String, etMsg: String, errorMsg: String) {
+       // Log.i("ErrorMsg",""+errorMsg)
+        if (errorMsg.isNotEmpty()){
+            tvoutPut.text = errorMsg
+            tvoutPut.setTextColor(getResources().getColor(R.color.texterror))
+            etOutput.setText(getString(R.string.invalid_command))
+        }else{
+            tvoutPut.text = tvMsg
+            tvoutPut.setTextColor(getResources().getColor(R.color.teal_200))
+            etOutput.setText(etMsg)
+        }
+
+
 
 
     }
@@ -145,7 +157,10 @@ class MainActivity : AppCompatActivity(),View.OnClickListener {
                     btPlace.setText("Place")
                     etInput.setText("")
                     etInput.setHint("Input")
-                    initialRobertPosition()
+                    resetRobotPosition()
+                    //activeButton()
+                    //inactiveButton()
+
                 }else{
                     if (tvXPosition.text.trim().equals(getString(R.string.XPosition)) && tvYposition.text.trim().equals(getString(
                             R.string.Yposition)) && tvFace.text.trim().equals(getString(R.string.Direction))){
@@ -190,18 +205,17 @@ class MainActivity : AppCompatActivity(),View.OnClickListener {
             }
             R.id.bt_report->{
                 inputList.add(CommandType.REPORT.name)
-                var robert = Robert()
+                var robert = Robot()
 
                 inputList.forEach {
-                    Log.i("Print12",""+it.toString())
 
                     var commandExecution : CommandExecution? = CommandFactory().getCommand(it.toString())
                     commandExecution?.execute(robert)
 
                 }
-                report = Report(robert.getCurrentStatus().toString())
-                println("FinalData11 ${report.finalStatus}")
-                outPutofRobert(getString(R.string.robert_position),report.finalStatus)
+                report = Report(robert.getCurrentStatus().toString(),robert.getTableFallCondition())
+
+                outPutofRobert(getString(R.string.robert_position),report.finalStatus,report.errorMsg)
                 inputList.clear()
                 inactiveButton()
 
@@ -210,13 +224,22 @@ class MainActivity : AppCompatActivity(),View.OnClickListener {
         }
     }
 
+    private fun resetRobotPosition() {
+       // activeButton()
+        tvXPosition.text = getString(R.string.XPosition)
+        tvYposition.text = getString(R.string.Yposition)
+        tvFace.text = getString(R.string.Direction)
+        tvoutPut.setTextColor(getResources().getColor(R.color.teal_200));
+        tvoutPut.text = getString(R.string.initial_position)
+        etOutput.setText(getString(R.string.Initial_Msg))
+    }
+
     private fun inactiveButton() {
 
-        btLeft.isClickable= false
-        btRight.isClickable= false
-        btmove.isClickable= false
-        btReport.isClickable= false
-
+        btLeft.isEnabled= false
+        btRight.isEnabled= false
+        btmove.isEnabled= false
+        btReport.isEnabled= false
 
         btLeft.setBackgroundColor(getResources().getColor(R.color.grey))
         btRight.setBackgroundColor(getResources().getColor(R.color.grey))
@@ -254,6 +277,7 @@ class MainActivity : AppCompatActivity(),View.OnClickListener {
         btRight.isEnabled= true
         btmove.isEnabled= true
         btReport.isEnabled= true
+
         btLeft.setBackgroundColor(getResources().getColor(R.color.black))
         btRight.setBackgroundColor(getResources().getColor(R.color.black))
         btmove.setBackgroundColor(getResources().getColor(R.color.black))

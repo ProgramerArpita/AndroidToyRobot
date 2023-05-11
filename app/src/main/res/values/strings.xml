@@ -1,12 +1,14 @@
 <resources>
-    <string name="app_name">ToyRobert</string>
+    <string name="app_name">ToyRobot</string>
     <string name="XPosition">XPosition</string>
     <string name="Yposition">YPosition</string>
     <string name="Direction">Direction</string>
     <string name="ERROR">ERROR</string>
     <string name="place_error">Please select X,Y and Direction from DropDown</string>
-    <string name="initial_position">Initial Robert Position</string>
-    <string name="final_position">Final Robert Position</string>
+    <string name="initial_position">Initial Robot Position</string>
+    <string name="final_position">Final Robot Position</string>
     <string name="Initial_Msg"> (0,0 SOUTH WEST CORNER)</string>
-    <string name="robert_position">RobertPosition</string>
+    <string name="robert_position">RobotPosition</string>
+    <string name="invalid_command">Invalid Command</string>
+    <string name="move_ignore">Move command ignored</string>
 </resources>

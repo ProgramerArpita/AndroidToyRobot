@@ -1,3 +1,3 @@
 package com.example.toyrobert
 
-data class Report(var finalStatus:String)
+data class Report(var finalStatus:String,var errorMsg:String)

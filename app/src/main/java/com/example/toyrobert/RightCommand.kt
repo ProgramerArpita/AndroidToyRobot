@@ -5,20 +5,20 @@ import android.util.Log
 class RightCommand: CommandExecution() {
     val TAG ="ClassName"
 
-    override fun execute(robert: Robert) {
+    override fun execute(robert: Robot) {
         if (!robert.isOnTable()){
             Log.i(TAG,"true")
 
         }else{
             when(robert.getCardinalDirection()){
-                RobertDirection.NORTH->
-                    robert.setCardinalDirection(RobertDirection.EAST)
-                RobertDirection.SOUTH->
-                    robert.setCardinalDirection(RobertDirection.WEST)
-                RobertDirection.EAST->
-                    robert.setCardinalDirection(RobertDirection.SOUTH)
-                RobertDirection.WEST->
-                    robert.setCardinalDirection(RobertDirection.NORTH)
+                RobotDirection.NORTH->
+                    robert.setCardinalDirection(RobotDirection.EAST)
+                RobotDirection.SOUTH->
+                    robert.setCardinalDirection(RobotDirection.WEST)
+                RobotDirection.EAST->
+                    robert.setCardinalDirection(RobotDirection.SOUTH)
+                RobotDirection.WEST->
+                    robert.setCardinalDirection(RobotDirection.NORTH)
             }
             Log.i(TAG,"Left 90"+robert.getCardinalDirection())
         }

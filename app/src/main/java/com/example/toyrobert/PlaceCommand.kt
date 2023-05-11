@@ -7,7 +7,7 @@ class PlaceCommand(val commandString: String): CommandExecution() {
         Log.i("Execute","PlaceCommand")
     }
 
-    override fun execute(robert: Robert) {
+    override fun execute(robert: Robot) {
         Log.i("placementParms11",""+robert.getCurrentStatus())
         var placementParms = commandString.split(" ")
         var placementData = placementParms[1].toString()
@@ -21,7 +21,7 @@ class PlaceCommand(val commandString: String): CommandExecution() {
             && yAxisData<=robert.maxPosition && yAxisData >=robert.minPosittion){
             robert.setXPosition(xAxisData)
             robert.setYPosition(yAxisData)
-            robert.setCardinalDirection(RobertDirection.valueOf(direction))
+            robert.setCardinalDirection(RobotDirection.valueOf(direction))
             Log.i("Robert current Position",""+robert.getCurrentStatus())
         }else{
             Log.i("Robert current Position","Invalid Place command")

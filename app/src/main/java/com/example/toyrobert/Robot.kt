@@ -2,12 +2,13 @@ package com.example.toyrobert
 
 import android.util.Log
 
-class Robert(){
+class Robot(){
     val maxPosition:Int = 4
     val minPosittion = 0
      private var xPosition:Int=0
     private var yPosition:Int =0
-    private var robertDirection:RobertDirection?=null
+    private var robertDirection:RobotDirection?=null
+    private var errorMsg =""
 
     fun getXPosition(): Int? {
         return xPosition
@@ -25,11 +26,11 @@ class Robert(){
         this.yPosition = yPosition
     }
 
-    fun getCardinalDirection(): RobertDirection? {
+    fun getCardinalDirection(): RobotDirection? {
         return robertDirection
     }
 
-    fun setCardinalDirection(robertDirection: RobertDirection) {
+    fun setCardinalDirection(robertDirection: RobotDirection) {
         this.robertDirection = robertDirection
     }
 
@@ -39,7 +40,15 @@ class Robert(){
     }
 
     fun getCurrentStatus(): String? {
-        return xPosition.toString()+ yPosition.toString()+ robertDirection.toString()
+        return "( "+xPosition.toString()+" ,"+ yPosition.toString()+" ,"+ robertDirection.toString()+" )"
+    }
+    fun setTableFallCondition(error:String){
+        this.errorMsg = error
+
+    }
+    fun getTableFallCondition():String{
+        return errorMsg
+
     }
 
 

@@ -1,6 +1,6 @@
 package com.example.toyrobert
 
-enum class RobertDirection {
+enum class RobotDirection {
     EAST, WEST, SOUTH, NORTH
 
 }
