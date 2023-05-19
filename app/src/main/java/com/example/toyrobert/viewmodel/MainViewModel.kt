@@ -7,45 +7,47 @@ import com.example.toyrobert.model.CommandType
 import com.example.toyrobert.model.Robot
 import com.example.toyrobert.model.RobotManager
 
-class MainViewModel(private val robotManager: RobotManager) :ViewModel() {
+class MainViewModel(private val robotManager: RobotManager) : ViewModel() {
     private var result = MutableLiveData<String>()
-    private var inputList = MutableLiveData<ArrayList<String>>()
-    val outPutResult:LiveData<String> get() = result
-    val finalInputList:LiveData<ArrayList<String>> get() = inputList
+    val outPutResult: LiveData<String> get() = result
 
-    private val mIssuePosts = ArrayList<String>()
-     val mIssuePostLiveData = MutableLiveData<List<String>>()
+    private val inputData = ArrayList<String>()
+    val inputListLiveData = MutableLiveData<List<String>>()
 
 
-    fun getPlaceCommand(command: String, robot: Robot){
-        robotManager.placeCommandFunction(command,robot)
-        inputList.value?.add(command)
-       // inputList.run { value?.add(command) ?: "Default" }
-        addIssuePost(command)
-       // result.value = robot.getCurrentStatus()
-
+    fun getPlaceCommand(command: String, robot: Robot) {
+        robotManager.placeCommandFunction(command, robot)
+        addInputData(command)
     }
-    fun getLeftDirection(robot: Robot){
+
+    fun getLeftDirection(robot: Robot) {
         robotManager.leftCommand(robot)
-        addIssuePost(CommandType.LEFT.name)
-       // result.value = robot.getCurrentStatus()
+        addInputData(CommandType.LEFT.name)
     }
-    fun getRightDirection(robot: Robot){
+
+    fun getRightDirection(robot: Robot) {
         robotManager.rightCommand(robot)
-        addIssuePost(CommandType.RIGHT.name)
-       // result.value = robot.getCurrentStatus()
+        addInputData(CommandType.RIGHT.name)
     }
-    fun move(robot: Robot){
+
+    fun move(robot: Robot) {
         robotManager.moveCommand(robot)
-        addIssuePost(CommandType.MOVE.name)
+        addInputData(CommandType.MOVE.name)
     }
-    fun report(robot: Robot){
-        addIssuePost(CommandType.REPORT.name)
+
+    fun report(robot: Robot) {
+        addInputData(CommandType.REPORT.name)
         result.value = robot.getCurrentStatus()
     }
-    private fun addIssuePost(command: String) {
-        mIssuePosts.add(command)
-        mIssuePostLiveData.value = mIssuePosts
+
+    private fun addInputData(command: String) {
+        inputData.add(command)
+        inputListLiveData.value = inputData
+    }
+
+    fun clearInputData() {
+        inputData.clear()
+        inputListLiveData.value = inputData
     }
 
 

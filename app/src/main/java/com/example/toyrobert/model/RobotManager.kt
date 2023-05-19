@@ -7,8 +7,6 @@ class RobotManager {
     private val MOVEIGNORE = "Move command ignored"
 
     fun placeCommandFunction(commandString: String, robot: Robot) {
-      /*  Log.i("placementParms11", "" + robot.getCurrentStatus())
-        Log.i("placementParms11", "" + commandString)*/
         val placementParams = commandString.split(" ")
         val placementData = placementParams[1]
         val data = placementData.split(",")
@@ -85,7 +83,7 @@ class RobotManager {
                     }
                 }
                 RobotDirection.EAST -> {
-                    if (robot.getXPosition()< robot.maxPosition) {
+                    if (robot.getXPosition() < robot.maxPosition) {
                         robot.increaseXPosition()
                         Log.i(TAG, "The robot is moving EAST ")
                     } else {
@@ -94,7 +92,7 @@ class RobotManager {
                     }
                 }
                 RobotDirection.WEST -> {
-                    if (robot.getXPosition()> robot.minPosittion) {
+                    if (robot.getXPosition() > robot.minPosittion) {
                         robot.decreaseXPosition()
                         Log.i(TAG, "The robot is moving ")
                     } else {

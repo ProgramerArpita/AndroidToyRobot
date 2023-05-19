@@ -1,9 +1,7 @@
 package com.example.toyrobert.view
 
-import android.graphics.Path.Direction
 import android.os.Build
 import android.os.Bundle
-import android.provider.CalendarContract.Colors
 import android.view.View
 import android.view.View.OnClickListener
 import android.widget.*
@@ -47,7 +45,7 @@ class MainActivity : AppCompatActivity(), OnClickListener {
         viewModel.outPutResult.observe(this) {
             mainBinding.etOutPutNumber.setText(it)
         }
-        viewModel.mIssuePostLiveData.observe(this) {
+        viewModel.inputListLiveData.observe(this) {
             mainBinding.etInputNumber.setText(it.toString())
         }
     }
@@ -118,7 +116,6 @@ class MainActivity : AppCompatActivity(), OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.bt_Place -> {
-
                 if (mainBinding.btPlace.text.toString() == getString(R.string.clear)) {
                     mainBinding.apply {
                         btPlace.text = getString(R.string.Place)
@@ -126,19 +123,25 @@ class MainActivity : AppCompatActivity(), OnClickListener {
                         etInputNumber.hint = "Input"
                         resetRobotPosition()
                     }
+                    viewModel.clearInputData()
 
+                }else{
+                    if (mainBinding.tvXPosition.text.trim() == getString(R.string.xPosition) && mainBinding.tvYPosition.text.trim() == getString(
+                            R.string.yPosition
+                        ) && mainBinding.tvFace.text.trim() == getString(R.string.direction)
+                    ) {
+                        errorMsg(getString(R.string.place_error), getString(R.string.initial_position))
+                    } else {
+                        inputData = "Place ${inputXPosition},${inputYPosition},${inputDirection}"
+                        mainBinding.apply {
+                            tvOutput.text = getString(R.string.robert_position)
+                            tvOutput.setTextColor(getColor(R.color.teal_200))
+                        }
+                        viewModel.getPlaceCommand(inputData, robot)
+                        activeButton()
+                    }
                 }
-                if (mainBinding.tvXPosition.text.trim() == getString(R.string.xPosition) && mainBinding.tvYPosition.text.trim() == getString(
-                        R.string.yPosition
-                    ) && mainBinding.tvFace.text.trim() == getString(R.string.direction)
-                ) {
-                    errorMsg(getString(R.string.place_error), getString(R.string.initial_position))
-                } else {
-                    inputData = "Place ${inputXPosition},${inputYPosition},${inputDirection}"
-                    mainBinding.etOutPutNumber.hint = getString(R.string.initial_Msg)
-                    viewModel.getPlaceCommand(inputData, robot)
-                    activeButton()
-                }
+
 
             }
             R.id.bt_Left -> {
@@ -198,12 +201,22 @@ class MainActivity : AppCompatActivity(), OnClickListener {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun activeButton() {
         mainBinding.apply {
             btLeft.isEnabled = true
             btRight.isEnabled = true
             btMove.isEnabled = true
             btReport.isEnabled = true
+
+            btLeft.setBackgroundColor(getColor(R.color.black))
+            btRight.setBackgroundColor(getColor(R.color.black))
+            btMove.setBackgroundColor(getColor(R.color.black))
+            btReport.setBackgroundColor(getColor(R.color.black))
+            btLeft.setTextColor(getColor(R.color.white))
+            btRight.setTextColor(getColor(R.color.white))
+            btMove.setTextColor(getColor(R.color.white))
+            btReport.setTextColor(getColor(R.color.white))
         }
     }
 
