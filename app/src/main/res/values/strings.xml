@@ -15,4 +15,11 @@
     <string name="y">Y</string>
     <string name="clear">Clear</string>
     <string name="Place">place</string>
+    <string name="place_command">Place Command</string>
+    <string name="input_data">Input Data</string>
+    <string name="face">Face</string>
+    <string name="left">Left</string>
+    <string name="right">Right</string>
+    <string name="move">Move</string>
+    <string name="report">Report</string>
 </resources>
