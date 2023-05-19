@@ -1,16 +1,16 @@
-package com.example.toyrobert
+package com.example.toyrobert.model
 
 import android.util.Log
 
-class Robot(){
-    val maxPosition:Int = 4
+class Robot {
+    val maxPosition: Int = 4
     val minPosittion = 0
-     private var xPosition:Int=0
-    private var yPosition:Int =0
-    private var robertDirection:RobotDirection?=null
-    private var errorMsg =""
+    private var xPosition: Int = 0
+    private var yPosition: Int = 0
+    private var robertDirection: RobotDirection? = null
+    private var errorMsg = ""
 
-    fun getXPosition(): Int? {
+    fun getXPosition(): Int {
         return xPosition
     }
 
@@ -35,18 +35,19 @@ class Robot(){
     }
 
     fun isOnTable(): Boolean {
-        return xPosition != null && yPosition != null && robertDirection != null &&
-                !(xPosition!! > maxPosition) && !(xPosition!! <minPosittion)&& !(yPosition!! >maxPosition) && !(yPosition!! <minPosittion)
+        return robertDirection != null && xPosition <= maxPosition && xPosition >= minPosittion && yPosition <= maxPosition && yPosition >= minPosittion
     }
 
-    fun getCurrentStatus(): String? {
-        return "( "+xPosition.toString()+" ,"+ yPosition.toString()+" ,"+ robertDirection.toString()+" )"
+    fun getCurrentStatus(): String {
+        return "( " + xPosition.toString() + " ," + yPosition.toString() + " ," + robertDirection.toString() + " )"
     }
-    fun setTableFallCondition(error:String){
+
+    fun setTableFallCondition(error: String) {
         this.errorMsg = error
 
     }
-    fun getTableFallCondition():String{
+
+    fun getTableFallCondition(): String {
         return errorMsg
 
     }
@@ -57,13 +58,13 @@ class Robot(){
     }
 
     fun decreaseYPosition() {
-       yPosition--
+        yPosition--
     }
 
     fun increaseXPosition() {
 
-       xPosition++
-        Log.i("Plus",""+xPosition)
+        xPosition++
+        Log.i("Plus", "" + xPosition)
     }
 
     fun decreaseXPosition() {

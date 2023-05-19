@@ -1,4 +1,4 @@
-package com.example.toyrobert
+package com.example.toyrobert.model
 
 enum class RobotDirection {
     EAST, WEST, SOUTH, NORTH
