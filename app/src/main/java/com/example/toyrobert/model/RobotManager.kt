@@ -5,7 +5,6 @@ import android.util.Log
 private const val TAG = "RobotManager"
 
 class RobotManager {
-
     fun placeCommandFunction(commandString: String, robot: Robot) {
         val placementParams = commandString.split(" ")
         val placementData = placementParams[1]
@@ -17,15 +16,15 @@ class RobotManager {
         if (xAxisData <= robot.maxPosition && xAxisData >= robot.minPosition
             && yAxisData <= robot.maxPosition && yAxisData >= robot.minPosition
         ) {
-            robot.setXPosition(xAxisData)
-            robot.setYPosition(yAxisData)
-            robot.setCardinalDirection(RobotDirection.valueOf(direction))
+            robot.setXPosition(xAxisData) // set x position of Robot
+            robot.setYPosition(yAxisData) // set y position of Robot
+            robot.setCardinalDirection(RobotDirection.valueOf(direction)) //set direction of Robot
             Log.i(TAG, "" + robot.getCurrentStatus())
         } else {
             Log.i(TAG, "Invalid Place command")
         }
     }
-
+    //  Rotate the robot 90 degrees in left direction
     fun leftCommand(robot: Robot) {
         if (robot.isOnTable()) {
             when (robot.getCardinalDirection()) {
@@ -44,7 +43,7 @@ class RobotManager {
             Log.i(TAG, "Left 90" + robot.getCardinalDirection())
         }
     }
-
+   // Rotate the robot 90 degree in right direction
     fun rightCommand(robot: Robot) {
         if (robot.isOnTable()) {
             when (robot.getCardinalDirection()) {
@@ -63,7 +62,7 @@ class RobotManager {
             Log.i(TAG, "Right 90" + robot.getCardinalDirection())
         }
     }
-
+    // Move Robot one unit forward in the direction it is facing
     fun moveCommand(robot: Robot) {
         if (robot.isOnTable()) {
             when (robot.getCardinalDirection()) {
@@ -84,7 +83,6 @@ class RobotManager {
                 RobotDirection.EAST -> {
                     if (robot.getXPosition() < robot.maxPosition) {
                         robot.increaseXPosition()
-                        Log.i(TAG, "The robot is moving EAST ")
                     } else {
                         Log.i(TAG, "Move command ignored")
                     }
@@ -92,7 +90,6 @@ class RobotManager {
                 RobotDirection.WEST -> {
                     if (robot.getXPosition() > robot.minPosition) {
                         robot.decreaseXPosition()
-                        Log.i(TAG, "The robot is moving ")
                     } else {
                         Log.i(TAG, "Move command ignored")
                     }
