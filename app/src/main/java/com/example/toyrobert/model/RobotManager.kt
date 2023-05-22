@@ -3,6 +3,9 @@ package com.example.toyrobert.model
 import android.util.Log
 
 private const val TAG = "RobotManager"
+private const val INVALID_COMMAND = "Invalid Place command"
+private const val INVALID_DIRECTION = "Not a valid Direction"
+private const val MOVE_IGNORE = "Move command ignored"
 
 class RobotManager {
     fun placeCommandFunction(commandString: String, robot: Robot) {
@@ -21,9 +24,10 @@ class RobotManager {
             robot.setCardinalDirection(RobotDirection.valueOf(direction)) //set direction of Robot
             Log.i(TAG, "" + robot.getCurrentStatus())
         } else {
-            Log.i(TAG, "Invalid Place command")
+            Log.i(TAG, INVALID_COMMAND)
         }
     }
+
     //  Rotate the robot 90 degrees in left direction
     fun leftCommand(robot: Robot) {
         if (robot.isOnTable()) {
@@ -37,13 +41,14 @@ class RobotManager {
                 RobotDirection.WEST ->
                     robot.setCardinalDirection(RobotDirection.SOUTH)
                 else -> {
-                    Log.i(TAG, "Not a valid Direction")
+                    Log.i(TAG, INVALID_DIRECTION)
                 }
             }
             Log.i(TAG, "Left 90" + robot.getCardinalDirection())
         }
     }
-   // Rotate the robot 90 degree in right direction
+
+    // Rotate the robot 90 degree in right direction
     fun rightCommand(robot: Robot) {
         if (robot.isOnTable()) {
             when (robot.getCardinalDirection()) {
@@ -56,12 +61,13 @@ class RobotManager {
                 RobotDirection.WEST ->
                     robot.setCardinalDirection(RobotDirection.NORTH)
                 else -> {
-                    Log.i(TAG, "Not a valid Direction")
+                    Log.i(TAG, INVALID_DIRECTION)
                 }
             }
             Log.i(TAG, "Right 90" + robot.getCardinalDirection())
         }
     }
+
     // Move Robot one unit forward in the direction it is facing
     fun moveCommand(robot: Robot) {
         if (robot.isOnTable()) {
@@ -70,35 +76,35 @@ class RobotManager {
                     if (robot.getYPosition() < robot.maxPosition) {
                         robot.increaseYPosition()
                     } else {
-                        Log.i(TAG, "Move command ignored")
+                        Log.i(TAG, MOVE_IGNORE)
                     }
                 }
                 RobotDirection.SOUTH -> {
                     if (robot.getYPosition() > robot.minPosition) {
                         robot.decreaseYPosition()
                     } else {
-                        Log.i(TAG, "Move command ignored")
+                        Log.i(TAG, MOVE_IGNORE)
                     }
                 }
                 RobotDirection.EAST -> {
                     if (robot.getXPosition() < robot.maxPosition) {
                         robot.increaseXPosition()
                     } else {
-                        Log.i(TAG, "Move command ignored")
+                        Log.i(TAG, MOVE_IGNORE)
                     }
                 }
                 RobotDirection.WEST -> {
                     if (robot.getXPosition() > robot.minPosition) {
                         robot.decreaseXPosition()
                     } else {
-                        Log.i(TAG, "Move command ignored")
+                        Log.i(TAG, MOVE_IGNORE)
                     }
                 }
                 else -> {
-                    Log.i(TAG, "Not a valid Direction")
+                    Log.i(TAG, INVALID_DIRECTION)
                 }
             }
-            Log.i(TAG, "Move Robert" + robot.getCurrentStatus())
+            Log.i(TAG, "Move Robot" + robot.getCurrentStatus())
         }
     }
 
