@@ -119,7 +119,6 @@ class MainActivity : AppCompatActivity(), OnClickListener {
                         resetRobotPosition()
                     }
                     viewModel.clearInputData()
-
                 } else {
                     if (mainBinding.tvXPosition.text.trim() == getString(R.string.xPosition) && mainBinding.tvYPosition.text.trim() == getString(
                             R.string.yPosition
@@ -137,11 +136,9 @@ class MainActivity : AppCompatActivity(), OnClickListener {
                             tvOutput.setTextColor(getColor(R.color.teal_200))
                         }
                         viewModel.getPlaceCommand(inputData, robot)
-                        activeButton(getString(R.string.active))
+                        buttonState(true, getColor(R.color.black))
                     }
                 }
-
-
             }
             R.id.bt_Left -> {
                 viewModel.getLeftDirection(robot)
@@ -154,10 +151,8 @@ class MainActivity : AppCompatActivity(), OnClickListener {
             }
             R.id.bt_report -> {
                 viewModel.report(robot)
-                activeButton(getString(R.string.reset))
-
+                buttonState(false, getColor(R.color.grey))
             }
-
         }
     }
 
@@ -171,52 +166,31 @@ class MainActivity : AppCompatActivity(), OnClickListener {
             tvOutput.text = getString(R.string.initial_position)
             etOutPutNumber.setText(getString(R.string.initial_Msg))
         }
-
-
     }
 
-
     @RequiresApi(Build.VERSION_CODES.M)
-    private fun activeButton(state: String) {
-        if (state == getString(R.string.active)) {
-            mainBinding.apply {
-                btLeft.isEnabled = true
-                btRight.isEnabled = true
-                btMove.isEnabled = true
-                btReport.isEnabled = true
-
-                btLeft.setBackgroundColor(getColor(R.color.black))
-                btRight.setBackgroundColor(getColor(R.color.black))
-                btMove.setBackgroundColor(getColor(R.color.black))
-                btReport.setBackgroundColor(getColor(R.color.black))
-                btLeft.setTextColor(getColor(R.color.white))
-                btRight.setTextColor(getColor(R.color.white))
-                btMove.setTextColor(getColor(R.color.white))
-                btReport.setTextColor(getColor(R.color.white))
-            }
-        } else {
-            mainBinding.apply {
-                btPlace.text = getString(R.string.clear)
-                btLeft.isEnabled = false
-                btRight.isEnabled = false
-                btMove.isEnabled = false
-                btReport.isEnabled = false
-
-                btLeft.setBackgroundColor(getColor(R.color.grey))
-                btRight.setBackgroundColor(getColor(R.color.grey))
-                btMove.setBackgroundColor(getColor(R.color.grey))
-                btReport.setBackgroundColor(getColor(R.color.grey))
-
-                btPlace.setBackgroundColor(getColor(R.color.black))
-                btPlace.setTextColor(getColor(R.color.white))
-
-                btLeft.setTextColor(getColor(R.color.white))
-                btRight.setTextColor(getColor(R.color.white))
-                btMove.setTextColor(getColor(R.color.white))
-                btReport.setTextColor(getColor(R.color.white))
+    private fun buttonState(state: Boolean, color: Int) {
+        mainBinding.apply {
+            btLeft.isEnabled = state
+            btRight.isEnabled = state
+            btMove.isEnabled = state
+            btReport.isEnabled = state
+            btLeft.setBackgroundColor(color)
+            btRight.setBackgroundColor(color)
+            btMove.setBackgroundColor(color)
+            btReport.setBackgroundColor(color)
+            btLeft.setTextColor(getColor(R.color.white))
+            btRight.setTextColor(getColor(R.color.white))
+            btMove.setTextColor(getColor(R.color.white))
+            btReport.setTextColor(getColor(R.color.white))
+            if (!state) {
+                btPlace.apply {
+                    text = getString(R.string.clear)
+                    setBackgroundColor(getColor(R.color.black))
+                    setTextColor(getColor(R.color.white))
+                }
             }
         }
-
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -226,8 +200,6 @@ class MainActivity : AppCompatActivity(), OnClickListener {
             tvOutput.text = tvMsg
             etOutPutNumber.setText(etMsg)
         }
-
-
     }
 }
 
