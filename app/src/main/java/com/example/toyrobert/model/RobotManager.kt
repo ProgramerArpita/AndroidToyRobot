@@ -2,9 +2,9 @@ package com.example.toyrobert.model
 
 import android.util.Log
 
+private const val TAG = "RobotManager"
+
 class RobotManager {
-    private val TAG = "RobotManager"
-    private val MOVEIGNORE = "Move command ignored"
 
     fun placeCommandFunction(commandString: String, robot: Robot) {
         val placementParams = commandString.split(" ")
@@ -14,16 +14,15 @@ class RobotManager {
         val yAxisData = data[1].toInt()
         val direction = data[2]
 
-
-        if (xAxisData <= robot.maxPosition && xAxisData >= robot.minPosittion
-            && yAxisData <= robot.maxPosition && yAxisData >= robot.minPosittion
+        if (xAxisData <= robot.maxPosition && xAxisData >= robot.minPosition
+            && yAxisData <= robot.maxPosition && yAxisData >= robot.minPosition
         ) {
             robot.setXPosition(xAxisData)
             robot.setYPosition(yAxisData)
             robot.setCardinalDirection(RobotDirection.valueOf(direction))
-            Log.i("Robot current position", "" + robot.getCurrentStatus())
+            Log.i(TAG, "" + robot.getCurrentStatus())
         } else {
-            Log.i("Robot current Position", "Invalid Place command")
+            Log.i(TAG, "Invalid Place command")
         }
     }
 
@@ -38,7 +37,9 @@ class RobotManager {
                     robot.setCardinalDirection(RobotDirection.NORTH)
                 RobotDirection.WEST ->
                     robot.setCardinalDirection(RobotDirection.SOUTH)
-                else -> {}
+                else -> {
+                    Log.i(TAG, "Not a valid Direction")
+                }
             }
             Log.i(TAG, "Left 90" + robot.getCardinalDirection())
         }
@@ -55,30 +56,28 @@ class RobotManager {
                     robot.setCardinalDirection(RobotDirection.SOUTH)
                 RobotDirection.WEST ->
                     robot.setCardinalDirection(RobotDirection.NORTH)
-                else -> {}
+                else -> {
+                    Log.i(TAG, "Not a valid Direction")
+                }
             }
-            Log.i(TAG, "Left 90" + robot.getCardinalDirection())
+            Log.i(TAG, "Right 90" + robot.getCardinalDirection())
         }
     }
 
     fun moveCommand(robot: Robot) {
-        if (!robot.isOnTable()) {
-            Log.i(TAG, "true")
-
-        } else {
+        if (robot.isOnTable()) {
             when (robot.getCardinalDirection()) {
                 RobotDirection.NORTH -> {
                     if (robot.getYPosition() < robot.maxPosition) {
                         robot.increaseYPosition()
                     } else {
-                        robot.setTableFallCondition(MOVEIGNORE)
+                        Log.i(TAG, "Move command ignored")
                     }
                 }
                 RobotDirection.SOUTH -> {
-                    if (robot.getYPosition() > robot.minPosittion) {
+                    if (robot.getYPosition() > robot.minPosition) {
                         robot.decreaseYPosition()
                     } else {
-                        robot.setTableFallCondition(MOVEIGNORE)
                         Log.i(TAG, "Move command ignored")
                     }
                 }
@@ -87,22 +86,20 @@ class RobotManager {
                         robot.increaseXPosition()
                         Log.i(TAG, "The robot is moving EAST ")
                     } else {
-                        robot.setTableFallCondition(MOVEIGNORE)
                         Log.i(TAG, "Move command ignored")
                     }
                 }
                 RobotDirection.WEST -> {
-                    if (robot.getXPosition() > robot.minPosittion) {
+                    if (robot.getXPosition() > robot.minPosition) {
                         robot.decreaseXPosition()
                         Log.i(TAG, "The robot is moving ")
                     } else {
-                        robot.setTableFallCondition(MOVEIGNORE)
                         Log.i(TAG, "Move command ignored")
                     }
                 }
-
-
-                else -> {}
+                else -> {
+                    Log.i(TAG, "Not a valid Direction")
+                }
             }
             Log.i(TAG, "Move Robert" + robot.getCurrentStatus())
         }

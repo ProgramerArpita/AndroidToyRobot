@@ -1,14 +1,12 @@
 package com.example.toyrobert.model
 
-import android.util.Log
 
 class Robot {
     val maxPosition: Int = 4
-    val minPosittion = 0
+    val minPosition = 0
     private var xPosition: Int = 0
     private var yPosition: Int = 0
     private var robertDirection: RobotDirection? = null
-    private var errorMsg = ""
 
     fun getXPosition(): Int {
         return xPosition
@@ -35,23 +33,12 @@ class Robot {
     }
 
     fun isOnTable(): Boolean {
-        return robertDirection != null && xPosition <= maxPosition && xPosition >= minPosittion && yPosition <= maxPosition && yPosition >= minPosittion
+        return robertDirection != null && xPosition <= maxPosition && xPosition >= minPosition && yPosition <= maxPosition && yPosition >= minPosition
     }
 
     fun getCurrentStatus(): String {
         return "( " + xPosition.toString() + " ," + yPosition.toString() + " ," + robertDirection.toString() + " )"
     }
-
-    fun setTableFallCondition(error: String) {
-        this.errorMsg = error
-
-    }
-
-    fun getTableFallCondition(): String {
-        return errorMsg
-
-    }
-
 
     fun increaseYPosition() {
         yPosition++
@@ -62,14 +49,10 @@ class Robot {
     }
 
     fun increaseXPosition() {
-
         xPosition++
-        Log.i("Plus", "" + xPosition)
     }
 
     fun decreaseXPosition() {
         xPosition--
     }
-
-
 }

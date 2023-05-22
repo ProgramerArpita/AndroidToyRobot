@@ -19,30 +19,25 @@ import com.example.toyrobert.viewmodel.MainViewModelFactory
 class MainActivity : AppCompatActivity(), OnClickListener {
     private lateinit var mainBinding: ActivityMainBinding
     private lateinit var viewModel: MainViewModel
-    private lateinit var viewModelFactory: MainViewModelFactory
     private lateinit var robot: Robot
-    private lateinit var robotManager: RobotManager
     lateinit var inputXPosition: String
     lateinit var inputYPosition: String
     lateinit var inputDirection: String
-    private lateinit var inputData: String
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        robot = Robot()
-        robotManager = RobotManager()
-        viewModelFactory = MainViewModelFactory(robotManager)
+        val viewModelFactory = MainViewModelFactory(RobotManager())
         viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
+        robot = Robot()
         initialUI()
-
         mainBinding.btPlace.setOnClickListener(this)
         mainBinding.btLeft.setOnClickListener(this)
         mainBinding.btRight.setOnClickListener(this)
         mainBinding.btMove.setOnClickListener(this)
         mainBinding.btReport.setOnClickListener(this)
-        viewModel.outPutResult.observe(this) {
+        viewModel.outputResult.observe(this) {
             mainBinding.etOutPutNumber.setText(it)
         }
         viewModel.inputListLiveData.observe(this) {
@@ -120,25 +115,29 @@ class MainActivity : AppCompatActivity(), OnClickListener {
                     mainBinding.apply {
                         btPlace.text = getString(R.string.Place)
                         etInputNumber.setText("")
-                        etInputNumber.hint = "Input"
+                        etInputNumber.hint = getString(R.string.input)
                         resetRobotPosition()
                     }
                     viewModel.clearInputData()
 
-                }else{
+                } else {
                     if (mainBinding.tvXPosition.text.trim() == getString(R.string.xPosition) && mainBinding.tvYPosition.text.trim() == getString(
                             R.string.yPosition
                         ) && mainBinding.tvFace.text.trim() == getString(R.string.direction)
                     ) {
-                        errorMsg(getString(R.string.place_error), getString(R.string.initial_position))
+                        errorMsg(
+                            getString(R.string.place_error),
+                            getString(R.string.initial_position)
+                        )
                     } else {
-                        inputData = "Place ${inputXPosition},${inputYPosition},${inputDirection}"
+                        val inputData =
+                            "Place ${inputXPosition},${inputYPosition},${inputDirection}"
                         mainBinding.apply {
                             tvOutput.text = getString(R.string.robert_position)
                             tvOutput.setTextColor(getColor(R.color.teal_200))
                         }
                         viewModel.getPlaceCommand(inputData, robot)
-                        activeButton()
+                        activeButton(getString(R.string.active))
                     }
                 }
 
@@ -155,7 +154,7 @@ class MainActivity : AppCompatActivity(), OnClickListener {
             }
             R.id.bt_report -> {
                 viewModel.report(robot)
-                resetButton()
+                activeButton(getString(R.string.reset))
 
             }
 
@@ -176,48 +175,48 @@ class MainActivity : AppCompatActivity(), OnClickListener {
 
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
-    private fun resetButton() {
-
-        mainBinding.apply {
-            btPlace.text = getString(R.string.clear)
-            btLeft.isEnabled= false
-            btRight.isEnabled= false
-            btMove.isEnabled= false
-            btReport.isEnabled= false
-
-            btLeft.setBackgroundColor(getColor(R.color.grey))
-            btRight.setBackgroundColor(getColor(R.color.grey))
-            btMove.setBackgroundColor(getColor(R.color.grey))
-            btReport.setBackgroundColor(getColor(R.color.grey))
-
-            btPlace.setBackgroundColor(getColor(R.color.black))
-            btPlace.setTextColor(getColor(R.color.white))
-
-            btLeft.setTextColor(getColor(R.color.white))
-            btRight.setTextColor(getColor(R.color.white))
-            btMove.setTextColor(getColor(R.color.white))
-            btReport.setTextColor(getColor(R.color.white))
-        }
-    }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    private fun activeButton() {
-        mainBinding.apply {
-            btLeft.isEnabled = true
-            btRight.isEnabled = true
-            btMove.isEnabled = true
-            btReport.isEnabled = true
+    private fun activeButton(state: String) {
+        if (state == getString(R.string.active)) {
+            mainBinding.apply {
+                btLeft.isEnabled = true
+                btRight.isEnabled = true
+                btMove.isEnabled = true
+                btReport.isEnabled = true
 
-            btLeft.setBackgroundColor(getColor(R.color.black))
-            btRight.setBackgroundColor(getColor(R.color.black))
-            btMove.setBackgroundColor(getColor(R.color.black))
-            btReport.setBackgroundColor(getColor(R.color.black))
-            btLeft.setTextColor(getColor(R.color.white))
-            btRight.setTextColor(getColor(R.color.white))
-            btMove.setTextColor(getColor(R.color.white))
-            btReport.setTextColor(getColor(R.color.white))
+                btLeft.setBackgroundColor(getColor(R.color.black))
+                btRight.setBackgroundColor(getColor(R.color.black))
+                btMove.setBackgroundColor(getColor(R.color.black))
+                btReport.setBackgroundColor(getColor(R.color.black))
+                btLeft.setTextColor(getColor(R.color.white))
+                btRight.setTextColor(getColor(R.color.white))
+                btMove.setTextColor(getColor(R.color.white))
+                btReport.setTextColor(getColor(R.color.white))
+            }
+        } else {
+            mainBinding.apply {
+                btPlace.text = getString(R.string.clear)
+                btLeft.isEnabled = false
+                btRight.isEnabled = false
+                btMove.isEnabled = false
+                btReport.isEnabled = false
+
+                btLeft.setBackgroundColor(getColor(R.color.grey))
+                btRight.setBackgroundColor(getColor(R.color.grey))
+                btMove.setBackgroundColor(getColor(R.color.grey))
+                btReport.setBackgroundColor(getColor(R.color.grey))
+
+                btPlace.setBackgroundColor(getColor(R.color.black))
+                btPlace.setTextColor(getColor(R.color.white))
+
+                btLeft.setTextColor(getColor(R.color.white))
+                btRight.setTextColor(getColor(R.color.white))
+                btMove.setTextColor(getColor(R.color.white))
+                btReport.setTextColor(getColor(R.color.white))
+            }
         }
+
     }
 
     @RequiresApi(Build.VERSION_CODES.M)

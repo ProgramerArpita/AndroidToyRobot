@@ -8,9 +8,8 @@ import com.example.toyrobert.model.Robot
 import com.example.toyrobert.model.RobotManager
 
 class MainViewModel(private val robotManager: RobotManager) : ViewModel() {
-    private var result = MutableLiveData<String>()
-    val outPutResult: LiveData<String> get() = result
-
+    private val result = MutableLiveData<String>()
+    val outputResult: LiveData<String> get() = result
     private val inputData = ArrayList<String>()
     val inputListLiveData = MutableLiveData<List<String>>()
 
@@ -49,6 +48,4 @@ class MainViewModel(private val robotManager: RobotManager) : ViewModel() {
         inputData.clear()
         inputListLiveData.value = inputData
     }
-
-
 }
